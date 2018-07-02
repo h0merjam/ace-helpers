@@ -43,6 +43,30 @@ class Helpers {
     return grouped;
   }
 
+  static getTerms(taxonomyField, attr = 'title', parentDepth = 0, prefix = '') {
+    const terms = [];
+
+    if (!taxonomyField) {
+      return terms;
+    }
+
+    if (taxonomyField.terms) {
+      taxonomyField.terms.forEach((term) => {
+        if (parentDepth > 0 && term.parents) {
+          term.parents.forEach((parent, i) => {
+            if (i < parentDepth) {
+              terms.push(parent[attr]);
+            }
+          });
+        }
+
+        terms.push(term[attr]);
+      });
+    }
+
+    return _.uniq(terms).map(term => prefix + term);
+  }
+
   thumbnailSrc(thumbnail, settings, cropSlug, cropFallback) {
     if (!thumbnail) {
       return '';
