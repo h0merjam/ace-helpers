@@ -67,7 +67,7 @@ class Helpers {
     return _.uniq(terms).map(term => prefix + term);
   }
 
-  thumbnailSrc(thumbnail, settings, cropSlug, cropFallback) {
+  thumbnailSrc(thumbnail, settings, cropSlug = undefined, cropFallback = undefined) {
     if (!thumbnail) {
       return '';
     }
@@ -129,14 +129,17 @@ class Helpers {
     return `${this.config.assistUrl}/${this.config.slug}/transform/${settings}/${video.name + video.ext}`;
   }
 
-  thumbnailSrcset(thumbnail, sizes, targetWidth = -1) {
-    if (targetWidth > -1) {
+  thumbnailSrcset(thumbnail, sizes, targetWidth = -1, cropSlug = undefined, cropFallback = undefined) {
+    if (typeof targetWidth === 'string' && typeof window !== 'undefined') {
+      targetWidth = (window.innerWidth * (parseInt(targetWidth, 10) / 100)) * (window.devicePixelRatio || 1);
+    }
+    if (typeof targetWidth === 'number' && targetWidth > -1) {
       const widths = sizes.map(size => parseInt(Object.keys(size)[0], 10)).sort((a, b) => (a > b ? 1 : -1));
       const width = _.find(widths, width => width >= targetWidth);
       const size = _.find(sizes, size => parseInt(Object.keys(size)[0], 10) === width);
       return this.thumbnailSrc(thumbnail, Object.values(size)[0]);
     }
-    return sizes.map(size => `${this.thumbnailSrc(thumbnail, Object.values(size)[0])} ${Object.keys(size)[0]}w`).join(', ');
+    return sizes.map(size => `${this.thumbnailSrc(thumbnail, Object.values(size)[0], cropSlug, cropFallback)} ${Object.keys(size)[0]}w`).join(', ');
   }
 }
 
