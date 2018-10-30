@@ -135,7 +135,7 @@ class Helpers {
     }
     if (typeof targetWidth === 'number' && targetWidth > -1) {
       const widths = sizes.map(size => parseInt(Object.keys(size)[0], 10)).sort((a, b) => (a > b ? 1 : -1));
-      const width = _.find(widths, width => width >= targetWidth);
+      const width = _.find(widths, width => width >= targetWidth) || _.last(widths);
       const size = _.find(sizes, size => parseInt(Object.keys(size)[0], 10) === width);
       return this.thumbnailSrc(thumbnail, Object.values(size)[0]);
     }
