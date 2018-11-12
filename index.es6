@@ -1,17 +1,18 @@
 import _ from 'lodash';
 
 class Helpers {
-  constructor(config = {}) {
+  constructor(config = {}, options = {}) {
     this.config = config;
 
-    Object.getOwnPropertyNames(Helpers).forEach((prop) => {
-      if (!/(length|name|prototype)/.test(prop)) {
-        this[prop] = Helpers[prop];
-      }
-    });
+    this.options = Object.assign({
+      groupSize: 2,
+      termAttr: 'title',
+      termParentDepth: 0,
+      termPrefix: '',
+    }, options);
   }
 
-  static groupEntities(entities, groupSize = Infinity) {
+  static _groupEntities(entities, groupSize = Infinity) {
     const grouped = [];
 
     let group = [];
@@ -43,7 +44,11 @@ class Helpers {
     return grouped;
   }
 
-  static getTerms(taxonomyField, attr = 'title', parentDepth = 0, prefix = '') {
+  groupEntities(entities, groupSize) {
+    return Helpers._groupEntities(entities, groupSize || this.options.groupSize);
+  }
+
+  static _getTerms(taxonomyField, termAttr = 'title', termParentDepth = 0, termPrefix = '') {
     const terms = [];
 
     if (!taxonomyField) {
@@ -52,19 +57,23 @@ class Helpers {
 
     if (taxonomyField.terms) {
       taxonomyField.terms.forEach((term) => {
-        if (parentDepth > 0 && term.parents) {
+        if (termParentDepth > 0 && term.parents) {
           term.parents.forEach((parent, i) => {
-            if (i < parentDepth) {
-              terms.push(parent[attr]);
+            if (i < termParentDepth) {
+              terms.push(parent[termAttr]);
             }
           });
         }
 
-        terms.push(term[attr]);
+        terms.push(term[termAttr]);
       });
     }
 
-    return _.uniq(terms).map(term => prefix + term);
+    return _.uniq(terms).map(term => termPrefix + term);
+  }
+
+  getTerms(taxonomyField, termAttr, termParentDepth, termPrefix) {
+    return Helpers._getTerms(taxonomyField, termAttr || this.options.termAttr, termParentDepth || this.options.termParentDepth, termPrefix || this.options.termPrefix);
   }
 
   thumbnailSrc(thumbnail, settings, cropSlug = undefined, cropFallback = undefined) {
