@@ -150,6 +150,13 @@ class Helpers {
     }
     return sizes.map(size => `${this.thumbnailSrc(thumbnail, Object.values(size)[0], cropSlug, cropFallback)} ${Object.keys(size)[0]}w`).join(', ');
   }
+
+  attachmentUrl(attachment, download = false) {
+    if (!attachment) {
+      return '';
+    }
+    return `${this.config.assistUrl}/${this.config.slug}/file/${download ? 'download' : 'view'}/${attachment.file.name + attachment.file.ext}/${attachment.original.fileName}`;
+  }
 }
 
 export default Helpers;
