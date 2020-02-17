@@ -2,27 +2,25 @@
   "name": "ace-helpers",
   "version": "0.0.7",
   "description": "Helper module for ACE projects",
-  "main": "index.es6",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/studiothomas/ace-helpers.git"
+    "url": "git+https://github.com/homerjam/ace-helpers.git"
   },
-  "author": "Studio Thomas <hello@studiothomas.co.uk>",
+  "author": "Studio Thomas <hello@homerjam.es>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/studiothomas/ace-helpers/issues"
+    "url": "https://github.com/homerjam/ace-helpers/issues"
   },
-  "homepage": "https://github.com/studiothomas/ace-helpers#readme",
+  "homepage": "https://github.com/homerjam/ace-helpers#readme",
   "dependencies": {
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.3",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.11.0"
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0"
   }
 }
