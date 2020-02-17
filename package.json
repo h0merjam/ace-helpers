@@ -1,6 +1,6 @@
 {
   "name": "ace-helpers",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Helper module for ACE projects",
   "main": "index.js",
   "scripts": {
