@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/homerjam/ace-helpers.git"
   },
-  "author": "Studio Thomas <hello@homerjam.es>",
+  "author": "James Homer <hello@homerjam.es>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/homerjam/ace-helpers/issues"
