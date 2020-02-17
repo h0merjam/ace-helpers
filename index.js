@@ -28,7 +28,7 @@ class Helpers {
     let group = [];
 
     entities.forEach(entity => {
-      entity = clone.clone(entity);
+      entity = clone(entity);
 
       if (!entity.groupBefore || group.length >= groupSize) {
         group = [];
