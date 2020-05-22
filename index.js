@@ -27,7 +27,7 @@ class Helpers {
 
     let group = [];
 
-    entities.forEach(entity => {
+    entities.forEach((entity) => {
       entity = clone(entity);
 
       if (!entity.groupBefore || group.length >= groupSize) {
@@ -39,11 +39,11 @@ class Helpers {
       if (!entity.groupAfter || group.length >= groupSize) {
         group.ratio = 0;
 
-        group.forEach(entity => {
+        group.forEach((entity) => {
           group.ratio += (entity.thumbnail || entity).ratio;
         });
 
-        group.forEach(entity => {
+        group.forEach((entity) => {
           entity.groupRatio = (entity.thumbnail || entity).ratio / group.ratio;
         });
 
@@ -74,7 +74,7 @@ class Helpers {
     }
 
     if (taxonomyField.terms) {
-      taxonomyField.terms.forEach(term => {
+      taxonomyField.terms.forEach((term) => {
         if (termParentDepth > 0 && term.parents) {
           term.parents.forEach((parent, i) => {
             if (i < termParentDepth) {
@@ -87,7 +87,7 @@ class Helpers {
       });
     }
 
-    return uniq(terms).map(term => termPrefix + term);
+    return uniq(terms).map((term) => termPrefix + term);
   }
 
   getTerms(taxonomyField, termAttr, termParentDepth, termPrefix) {
@@ -137,10 +137,11 @@ class Helpers {
       (value, key) => `${key}:${value}`
     ).join(';');
 
-    if (/(image)/.test(thumbnail.thumbnailType)) {
+    if (/(image)/.test(thumbnail.type)) {
       if (thumbnail.ext === '.svg' && !settings.f) {
-        return `${this.config.assistUrl}/${this.config.slug}/${thumbnail.name +
-          thumbnail.ext}`;
+        return `${this.config.assistUrl}/${this.config.slug}/${
+          thumbnail.name + thumbnail.ext
+        }`;
       }
 
       return `${this.config.assistUrl}/${
@@ -148,14 +149,17 @@ class Helpers {
       }/transform/${settingsString}/${thumbnail.name + thumbnail.ext}`;
     }
 
-    if (/(video)/.test(thumbnail.thumbnailType)) {
+    if (/(video)/.test(thumbnail.type)) {
       return `${this.config.assistUrl}/${this.config.slug}/transform/${settingsString}/${thumbnail.name}/thumb.jpg`;
     }
 
-    if (/(oembed|proxy)/.test(thumbnail.thumbnailType)) {
-      const thumbnailUrl = thumbnail.thumbnailUrl.replace(/https?:\/\//, '');
-
-      return `${this.config.assistUrl}/${this.config.slug}/proxy/transform/${settingsString}/${thumbnailUrl}`;
+    if (/(oembed|proxy)/.test(thumbnail.type)) {
+      return `${this.config.assistUrl}/${
+        this.config.slug
+      }/proxy/transform/${settingsString}/${thumbnail.url.replace(
+        /https?:\/\//,
+        ''
+      )}`;
     }
 
     return '';
@@ -199,18 +203,19 @@ class Helpers {
     }
     if (typeof targetWidth === 'number' && targetWidth > -1) {
       const widths = sizes
-        .map(size => parseInt(Object.keys(size)[0], 10))
+        .map((size) => parseInt(Object.keys(size)[0], 10))
         .sort((a, b) => (a > b ? 1 : -1));
-      const width = find(widths, width => width >= targetWidth) || last(widths);
+      const width =
+        find(widths, (width) => width >= targetWidth) || last(widths);
       const size = find(
         sizes,
-        size => parseInt(Object.keys(size)[0], 10) === width
+        (size) => parseInt(Object.keys(size)[0], 10) === width
       );
       return this.thumbnailSrc(thumbnail, Object.values(size)[0]);
     }
     return sizes
       .map(
-        size =>
+        (size) =>
           `${this.thumbnailSrc(
             thumbnail,
             Object.values(size)[0],
