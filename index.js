@@ -1,11 +1,4 @@
-import clone from 'lodash/clone';
-import uniq from 'lodash/uniq';
-import map from 'lodash/map';
-import find from 'lodash/find';
-import reduce from 'lodash/reduce';
-import merge from 'lodash/merge';
-import fromPairs from 'lodash/fromPairs';
-import last from 'lodash/last';
+import { clone, find, fromPairs, last, map, merge, reduce, uniq } from 'lodash';
 
 class Helpers {
   constructor(config = {}, options = {}) {
@@ -195,12 +188,21 @@ class Helpers {
     cropSlug = undefined,
     cropFallback = undefined
   ) {
-    if (typeof targetWidth === 'string' && typeof window !== 'undefined') {
-      targetWidth =
-        window.innerWidth *
-        (parseInt(targetWidth, 10) / 100) *
-        (window.devicePixelRatio || 1);
+    if (typeof targetWidth === 'string') {
+      const targetWidthPercentage = parseInt(targetWidth, 10) / 100;
+
+      if (typeof window === 'undefined') {
+        targetWidth = 1280 * targetWidthPercentage;
+      }
+
+      if (typeof window !== 'undefined') {
+        targetWidth =
+          window.innerWidth *
+          targetWidthPercentage *
+          (window.devicePixelRatio || 1);
+      }
     }
+
     if (typeof targetWidth === 'number' && targetWidth > -1) {
       const widths = sizes
         .map((size) => parseInt(Object.keys(size)[0], 10))
@@ -211,8 +213,10 @@ class Helpers {
         sizes,
         (size) => parseInt(Object.keys(size)[0], 10) === width
       );
+
       return this.thumbnailSrc(thumbnail, Object.values(size)[0]);
     }
+
     return sizes
       .map(
         (size) =>
