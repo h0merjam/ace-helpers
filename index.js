@@ -158,6 +158,10 @@ class Helpers {
     return '';
   }
 
+  audioSrc(audio, settings) {
+    return this.videoSrc(audio, settings);
+  }
+
   videoSrc(video, settings) {
     if (!video) {
       return '';
@@ -228,6 +232,15 @@ class Helpers {
           )} ${Object.keys(size)[0]}w`
       )
       .join(', ');
+  }
+
+  fileUrl({ file }) {
+    if (!file) {
+      return '';
+    }
+    return `${this.config.assistUrl}/${this.config.slug}/${
+      file.name + file.ext
+    }`;
   }
 
   attachmentUrl(attachment, download = false) {
