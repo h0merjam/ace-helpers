@@ -95,8 +95,12 @@ class Helpers {
   thumbnailSrc(
     thumbnail,
     settings,
-    cropSlug = undefined,
-    cropFallback = undefined
+    {
+      noCache = undefined,
+      noRedirect = undefined,
+      cropSlug = undefined,
+      cropFallback = undefined,
+    } = {}
   ) {
     if (!thumbnail) {
       return '';
@@ -130,20 +134,27 @@ class Helpers {
       (value, key) => `${key}:${value}`
     ).join(';');
 
+    let query = [
+      noCache ? 'noCache' : undefined,
+      noRedirect ? 'noRedirect' : undefined,
+    ].filter((option) => option !== undefined);
+
+    query = `${query.length ? '?' : ''}${query.join('&')}`;
+
     if (/(image)/.test(thumbnail.type)) {
       if (thumbnail.ext === '.svg' && !settings.f) {
         return `${this.config.assistUrl}/${this.config.slug}/${
           thumbnail.name + thumbnail.ext
-        }`;
+        }${query}`;
       }
 
       return `${this.config.assistUrl}/${
         this.config.slug
-      }/transform/${settingsString}/${thumbnail.name + thumbnail.ext}`;
+      }/transform/${settingsString}/${thumbnail.name + thumbnail.ext}${query}`;
     }
 
     if (/(video)/.test(thumbnail.type)) {
-      return `${this.config.assistUrl}/${this.config.slug}/transform/${settingsString}/${thumbnail.name}/thumb.jpg`;
+      return `${this.config.assistUrl}/${this.config.slug}/transform/${settingsString}/${thumbnail.name}/thumb.jpg${query}`;
     }
 
     if (/(oembed|proxy)/.test(thumbnail.type)) {
@@ -152,17 +163,21 @@ class Helpers {
       }/proxy/transform/${settingsString}/${thumbnail.url.replace(
         /https?:\/\//,
         ''
-      )}`;
+      )}${query}`;
     }
 
     return '';
   }
 
-  audioSrc(audio, settings) {
-    return this.videoSrc(audio, settings);
+  audioSrc(audio, settings, options) {
+    return this.videoSrc(audio, settings, options);
   }
 
-  videoSrc(video, settings) {
+  videoSrc(
+    video,
+    settings,
+    { noCache = undefined, noRedirect = undefined } = {}
+  ) {
     if (!video) {
       return '';
     }
@@ -180,9 +195,16 @@ class Helpers {
     // Convert settings to string
     settings = map(settings, (value, key) => `${key}:${value}`).join(';');
 
+    let query = [
+      noCache ? 'noCache' : undefined,
+      noRedirect ? 'noRedirect' : undefined,
+    ].filter((option) => option !== undefined);
+
+    query = `${query.length ? '?' : ''}${query.join('&')}`;
+
     return `${this.config.assistUrl}/${
       this.config.slug
-    }/transform/${settings}/${video.name + video.ext}`;
+    }/transform/${settings}/${video.name + video.ext}${query}`;
   }
 
   thumbnailSrcset(
