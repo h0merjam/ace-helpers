@@ -103,7 +103,7 @@ class Helpers {
     } = {}
   ) {
     if (!thumbnail) {
-      return '';
+      return undefined;
     }
 
     if (typeof settings === 'string') {
@@ -179,7 +179,7 @@ class Helpers {
     { noCache = undefined, noRedirect = undefined } = {}
   ) {
     if (!video) {
-      return '';
+      return undefined;
     }
 
     if (typeof settings === 'string') {
@@ -258,7 +258,7 @@ class Helpers {
 
   fileUrl({ file }) {
     if (!file) {
-      return '';
+      return undefined;
     }
     return `${this.config.assistUrl}/${this.config.slug}/${
       file.name + file.ext
@@ -267,7 +267,7 @@ class Helpers {
 
   attachmentUrl(attachment, download = false) {
     if (!attachment) {
-      return '';
+      return undefined;
     }
     return `${this.config.assistUrl}/${this.config.slug}/file/${
       download ? 'download' : 'view'
