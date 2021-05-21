@@ -210,9 +210,13 @@ class Helpers {
   thumbnailSrcset(
     thumbnail,
     sizes,
-    targetWidth = -1,
-    cropSlug = undefined,
-    cropFallback = undefined
+    {
+      targetWidth = undefined,
+      noCache = undefined,
+      noRedirect = undefined,
+      cropSlug = undefined,
+      cropFallback = undefined,
+    } = {}
   ) {
     if (typeof targetWidth === 'string') {
       const targetWidthPercentage = parseInt(targetWidth, 10) / 100;
@@ -229,7 +233,7 @@ class Helpers {
       }
     }
 
-    if (typeof targetWidth === 'number' && targetWidth > -1) {
+    if (typeof targetWidth === 'number') {
       const widths = sizes
         .map((size) => parseInt(Object.keys(size)[0], 10))
         .sort((a, b) => (a > b ? 1 : -1));
@@ -240,18 +244,23 @@ class Helpers {
         (size) => parseInt(Object.keys(size)[0], 10) === width
       );
 
-      return this.thumbnailSrc(thumbnail, Object.values(size)[0]);
+      return this.thumbnailSrc(thumbnail, Object.values(size)[0], {
+        noCache,
+        noRedirect,
+        cropSlug,
+        cropFallback,
+      });
     }
 
     return sizes
       .map(
         (size) =>
-          `${this.thumbnailSrc(
-            thumbnail,
-            Object.values(size)[0],
+          `${this.thumbnailSrc(thumbnail, Object.values(size)[0], {
+            noCache,
+            noRedirect,
             cropSlug,
-            cropFallback
-          )} ${Object.keys(size)[0]}w`
+            cropFallback,
+          })} ${Object.keys(size)[0]}w`
       )
       .join(', ');
   }
